@@ -2,6 +2,7 @@ import {SafeAreaView} from "react-native-safe-area-context";
 import { FlatList, Image, Pressable, Text, TouchableOpacity, View} from "react-native";
 import {Fragment} from "react";
 import cn from 'clsx';
+import { router } from "expo-router";
 
 import CartButton from "@/components/CartButton";
 import {images, offers} from "@/constants";
@@ -9,6 +10,33 @@ import useAuthStore from "@/store/auth.store";
 
 export default function Index() {
     const { user } = useAuthStore();
+
+    // Function to handle offer card press
+    const handleOfferPress = (offerTitle: string) => {
+        console.log("Pressed offer:", offerTitle);
+
+        // Map offer titles to actual category IDs from your database
+        const categoryMap: { [key: string]: string } = {
+            "BURGER BASH": "6999649f000bd6a4e481",  // Burgers ID
+            "SUMMER COMBO": "699964a100054a125937", // Bowls
+            "PIZZA PARTY": "6999649f00231bb6460b",   // Pizzas ID
+            "BURRITO DELIGHT": "6999649f003a62338f9a" // Burritos ID
+        };
+
+        const categoryId = categoryMap[offerTitle];
+        console.log("Mapped category ID:", categoryId);
+
+        // Navigate to search screen with the category ID
+        if (categoryId) {
+            console.log("Navigating with category ID:", categoryId);
+            router.push({
+                pathname: "/(tabs)/search",
+                params: { category: categoryId }
+            });
+        } else {
+            console.log("No category mapping found for:", offerTitle);
+        }
+    };
 
     return (
         <SafeAreaView className="flex-1 bg-white">
@@ -23,6 +51,7 @@ export default function Index() {
                                 className={cn("offer-card", isEven ? 'flex-row-reverse' : 'flex-row')}
                                 style={{ backgroundColor: item.color }}
                                 android_ripple={{ color: "#fffff22"}}
+                                onPress={() => handleOfferPress(item.title)}
                             >
                                 {({ pressed }) => (
                                     <Fragment>
