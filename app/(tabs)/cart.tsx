@@ -20,8 +20,12 @@ const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: Payment
 const Cart = () => {
     const { items, getTotalItems, getTotalPrice } = useCartStore();
 
+    const DELIVERY_FEE = 200;
+    const DISCOUNT = 100;
+
     const totalItems = getTotalItems();
     const totalPrice = getTotalPrice();
+    const finalTotal = totalPrice + DELIVERY_FEE - DISCOUNT;
 
     return (
         <SafeAreaView className="bg-white h-full">
@@ -41,21 +45,21 @@ const Cart = () => {
 
                             <PaymentInfoStripe
                                 label={`Total Items (${totalItems})`}
-                                value={`$${totalPrice.toFixed(2)}`}
+                                value={`Ksh ${totalPrice.toFixed(2)}`}
                             />
                             <PaymentInfoStripe
                                 label={`Delivery Fee`}
-                                value={`$5.00`}
+                                value={`Ksh ${DELIVERY_FEE}`}
                             />
                             <PaymentInfoStripe
                                 label={`Discount`}
-                                value={`- $0.50`}
+                                value={`- Ksh ${DISCOUNT}`}
                                 valueStyle="!text-success"
                             />
                             <View className="border-t border-gray-300 my-2" />
                             <PaymentInfoStripe
                                 label={`Total`}
-                                value={`$${(totalPrice + 5 - 0.5).toFixed(2)}`}
+                                value={`Ksh ${finalTotal.toFixed(2)}`}
                                 labelStyle="base-bold !text-dark-100"
                                 valueStyle="base-bold !text-dark-100 !text-right"
                             />

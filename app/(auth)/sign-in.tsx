@@ -1,32 +1,72 @@
-import {View, Text, Button, Alert} from 'react-native'
+import {View, Text, Alert} from 'react-native'
 import {Link, router} from "expo-router";
 import CustomInput from "@/components/CustomInput";
 import CustomButton from "@/components/CustomButton";
-import {useState} from "react";
-import {signIn} from "@/lib/appwrite";
+import {useState, useEffect} from "react";
+import {signIn, account} from "@/lib/appwrite";
 import * as Sentry from '@sentry/react-native'
 
 const SignIn = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isChecking, setIsChecking] = useState(true);
     const [form, setForm] = useState({ email: '', password: '' });
+
+    useEffect(() => {
+        checkExistingSession();
+    }, []);
+
+    const checkExistingSession = async () => {
+        try {
+            const session = await account.get();
+            if (session) {
+                router.replace('/(tabs)');
+            }
+        } catch (error) {
+            console.log('No active session');
+        } finally {
+            setIsChecking(false);
+        }
+    };
 
     const submit = async () => {
         const { email, password } = form;
 
-        if(!email || !password) return Alert.alert('Error', 'Please enter valid email address & password.');
+        if(!email || !password) {
+            return Alert.alert('Error', 'Please enter valid email address & password.');
+        }
 
-        setIsSubmitting(true)
+        setIsSubmitting(true);
 
         try {
             await signIn({ email, password });
-
-            router.replace('/');
+            router.replace('/(tabs)');
         } catch(error: any) {
-            Alert.alert('Error', error.message);
-            Sentry.captureEvent(error);
+            if (error.message?.includes('session is active')) {
+                Alert.alert(
+                    'Session Active',
+                    'You are already logged in.',
+                    [
+                        {
+                            text: 'Go to Home',
+                            onPress: () => router.replace('/(tabs)')
+                        }
+                    ]
+                );
+            } else {
+                Alert.alert('Error', error.message);
+            }
+            Sentry.captureException(error);
         } finally {
             setIsSubmitting(false);
         }
+    };
+
+    if (isChecking) {
+        return (
+            <View className="flex-1 justify-center items-center bg-white">
+                <Text className="font-quicksand-medium text-gray-500">Checking session...</Text>
+            </View>
+        );
     }
 
     return (

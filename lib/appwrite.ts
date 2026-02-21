@@ -5,13 +5,13 @@ export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
     projectId: process.env.EXPO_PUBLIC_APPWRITE_PROJECT_ID!,
     platform: "com.jsm.foodordering",
-    databaseId: '68629ae60038a7c61fe4',
-    bucketId: '68643e170015edaa95d7',
-    userCollectionId: '68629b0a003d27acb18f',
-    categoriesCollectionId: '68643a390017b239fa0f',
-    menuCollectionId: '68643ad80027ddb96920',
-    customizationsCollectionId: '68643c0300297e5abc95',
-    menuCustomizationsCollectionId: '68643cd8003580ecdd8f'
+    databaseId: '6998751f00212218bdb9',
+    bucketId: '6998b23e002d01693302',
+    userCollectionId: 'user',
+    categoriesCollectionId: 'categories',
+    menuCollectionId: 'menu',
+    customizationsCollectionId: 'customizations',
+    menuCustomizationsCollectionId: 'menu_customizations'
 }
 
 export const client = new Client();
@@ -51,6 +51,14 @@ export const signIn = async ({ email, password }: SignInParams) => {
         const session = await account.createEmailPasswordSession(email, password);
     } catch (e) {
         throw new Error(e as string);
+    }
+}
+
+export const signOut = async () => {
+    try {
+        await account.deleteSession('current');
+    } catch (e) {
+        console.log('Sign out error:', e);
     }
 }
 
