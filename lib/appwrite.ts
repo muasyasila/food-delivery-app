@@ -1,5 +1,5 @@
 import {Account, Avatars, Client, Databases, ID, Query, Storage} from "react-native-appwrite";
-import {CreateUserParams, GetMenuParams, SignInParams} from "@/type";
+import {CreateUserParams, GetMenuParams, MenuItem, SignInParams} from "@/type";
 
 export const appwriteConfig = {
     endpoint: process.env.EXPO_PUBLIC_APPWRITE_ENDPOINT!,
@@ -113,3 +113,18 @@ export const getCategories = async () => {
         throw new Error(e as string);
     }
 }
+
+// Add this to your appwrite.ts file
+export const getMenuById = async (id: string) => {
+    try {
+        const menuItem = await databases.getDocument(
+            appwriteConfig.databaseId,
+            appwriteConfig.menuCollectionId,
+            id
+        );
+        return menuItem as MenuItem;
+    } catch (error) {
+        console.error('Error fetching menu item:', error);
+        throw error;
+    }
+};

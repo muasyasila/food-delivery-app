@@ -3,6 +3,7 @@ import { MenuItem } from "@/type";
 import { appwriteConfig } from "@/lib/appwrite";
 import { useCartStore } from "@/store/cart.store";
 import { useState, useEffect } from 'react';
+import { router } from 'expo-router';
 
 const MenuCard = ({ item }: { item: MenuItem }) => {
     const [imageError, setImageError] = useState(false);
@@ -13,6 +14,14 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
     useEffect(() => {
         // Debug: Log the entire item to see what we're getting
         console.log('MenuCard - Full item:', JSON.stringify(item, null, 2));
+
+        // Check if item exists
+        if (!item) {
+            console.log('No item provided');
+            setImageError(true);
+            setIsLoading(false);
+            return;
+        }
 
         // Check which image field exists
         let url = '';
@@ -29,21 +38,21 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
             return;
         }
 
-        // Add project ID if not present
-        if (url && !url.includes('project=')) {
+        // Add project ID if not present (with null check)
+        if (url && typeof url === 'string' && !url.includes('project=')) {
             const separator = url.includes('?') ? '&' : '?';
             url = `${url}${separator}project=${appwriteConfig.projectId}`;
         }
 
         console.log('Final image URL:', url);
-        setImageUrl(url);
+        setImageUrl(url || '');
         setIsLoading(false);
     }, [item]);
 
     const handleImageError = (error: any) => {
         console.log('❌ Image failed to load:', {
             url: imageUrl,
-            error: error.nativeEvent?.error || error
+            error: error?.nativeEvent?.error || error || 'Unknown error'
         });
         setImageError(true);
     };
@@ -54,12 +63,23 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
     };
 
     const handleAddToCart = () => {
+        if (!item || !item.$id) return;
+
         addItem({
             id: item.$id,
-            name: item.name,
-            price: item.price,
-            image_url: imageUrl,
+            name: item.name || 'Unknown Item',
+            price: item.price || 0,
+            image_url: imageUrl || '',
             customizations: []
+        });
+    };
+
+    const handleCardPress = () => {
+        if (!item || !item.$id) return;
+
+        router.push({
+            pathname: "/item/[id]",
+            params: { id: item.$id }
         });
     };
 
@@ -68,15 +88,17 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
             <TouchableOpacity
                 className="menu-card"
                 style={Platform.OS === 'android' ? { elevation: 10, shadowColor: '#878787' } : {}}
+                onPress={handleCardPress}
+                disabled={!item}
             >
                 <View className="size-32 absolute -top-10 bg-gray-200 rounded-lg items-center justify-center">
-                    <Text>Loading...</Text>
+                    <Text className="text-xs text-gray-500">Loading...</Text>
                 </View>
                 <Text className="text-center base-bold text-dark-100 mb-2" numberOfLines={1}>
                     {item?.name || 'Loading...'}
                 </Text>
                 <Text className="body-regular text-gray-200 mb-4">
-                    From ${item?.price || '0'}
+                    Ksh {item?.price?.toString() || '0'}
                 </Text>
             </TouchableOpacity>
         );
@@ -86,8 +108,10 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
         <TouchableOpacity
             className="menu-card"
             style={Platform.OS === 'android' ? { elevation: 10, shadowColor: '#878787' } : {}}
+            onPress={handleCardPress}
+            disabled={!item}
         >
-            {!imageError ? (
+            {!imageError && imageUrl ? (
                 <Image
                     source={{ uri: imageUrl }}
                     className="size-32 absolute -top-10"
@@ -97,16 +121,16 @@ const MenuCard = ({ item }: { item: MenuItem }) => {
                 />
             ) : (
                 <View className="size-32 absolute -top-10 bg-gray-200 rounded-lg items-center justify-center">
-                    <Text className="text-xs text-gray-500">Image unavailable</Text>
+                    <Text className="text-xs text-gray-500">🍔</Text>
                 </View>
             )}
 
             <Text className="text-center base-bold text-dark-100 mb-2" numberOfLines={1}>
-                {item.name}
+                {item?.name || 'Unknown Item'}
             </Text>
 
             <Text className="body-regular text-gray-200 mb-4">
-                Ksh {item.price}
+                Ksh {item?.price?.toString() || '0'}
             </Text>
 
             <TouchableOpacity onPress={handleAddToCart}>
