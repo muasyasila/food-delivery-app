@@ -1,45 +1,74 @@
-import {Redirect, Slot, Tabs} from "expo-router";
+import {Redirect, Tabs} from "expo-router";
 import useAuthStore from "@/store/auth.store";
 import {TabBarIconProps} from "@/type";
-import {Image, Text, View} from "react-native";
+import {Image, Text, View, ActivityIndicator, Platform} from "react-native";
 import {images} from "@/constants";
 import cn from "clsx";
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const TabBarIcon = ({ focused, icon, title }: TabBarIconProps) => (
-    <View className="tab-icon">
-        <Image source={icon} className="size-7" resizeMode="contain" tintColor={focused ? '#FE8C00' : '#5D5F6D'} />
-        <Text className={cn('text-sm font-bold', focused ? 'text-primary':'text-gray-200')}>
+    <View className="items-center justify-center">
+        <Image
+            source={icon}
+            className="size-6 mb-1"
+            resizeMode="contain"
+            tintColor={focused ? '#FE8C00' : '#9CA3AF'}
+        />
+        <Text
+            className={cn(
+                'text-xs font-medium',
+                focused ? 'text-[#FE8C00]' : 'text-gray-400'
+            )}
+            numberOfLines={1}
+        >
             {title}
         </Text>
     </View>
 )
 
 export default function TabLayout() {
-    const { isAuthenticated } = useAuthStore();
+    const { isAuthenticated, isLoading } = useAuthStore();
+    const insets = useSafeAreaInsets();
 
-    if(!isAuthenticated) return <Redirect href="/sign-in" />
+    // Show loading while checking authentication
+    if (isLoading) {
+        return (
+            <View className="flex-1 justify-center items-center bg-white">
+                <ActivityIndicator size="large" color="#FE8C00" />
+            </View>
+        );
+    }
+
+    // Redirect to sign-in if not authenticated
+    if (!isAuthenticated) return <Redirect href="/(auth)/sign-in" />;
 
     return (
-        <Tabs screenOptions={{
+        <Tabs
+            screenOptions={{
                 headerShown: false,
                 tabBarShowLabel: false,
                 tabBarStyle: {
-                    borderTopLeftRadius: 50,
-                    borderTopRightRadius: 50,
-                    borderBottomLeftRadius: 50,
-                    borderBottomRightRadius: 50,
-                    marginHorizontal: 20,
-                    height: 80,
                     position: 'absolute',
-                    bottom: 40,
+                    bottom: Platform.OS === 'ios' ? 20 + insets.bottom : 16 + insets.bottom,
+                    left: 20,
+                    right: 20,
+                    height: 65,
                     backgroundColor: 'white',
-                    shadowColor: '#1a1a1a',
-                    shadowOffset: { width: 0, height: 2 },
+                    borderRadius: 30,
+                    shadowColor: '#000',
+                    shadowOffset: { width: 0, height: 4 },
                     shadowOpacity: 0.1,
-                    shadowRadius: 4,
-                    elevation: 5
-                }
-            }}>
+                    shadowRadius: 10,
+                    elevation: 8,
+                    borderTopWidth: 0,
+                    paddingBottom: Platform.OS === 'ios' ? 0 : 5,
+                    paddingTop: 8,
+                },
+                tabBarItemStyle: {
+                    paddingVertical: 5,
+                },
+            }}
+        >
             <Tabs.Screen
                 name='index'
                 options={{

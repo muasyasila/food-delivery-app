@@ -191,19 +191,7 @@ export default function Index() {
                 </ScrollView>
             </View>
 
-            {/* Deliver To Section */}
-            <View className="flex-row justify-between items-center mb-4">
-                <View>
-                    <Text className="text-xs font-quicksand-medium text-primary uppercase tracking-wider">
-                        Deliver To
-                    </Text>
-                    <TouchableOpacity className="flex-row items-center gap-x-1 mt-1">
-                        <Text className="text-base font-quicksand-bold text-dark-100">Buruburu</Text>
-                        <Image source={images.arrowDown} className="w-3 h-3" tintColor="#FE8C00" />
-                    </TouchableOpacity>
-                </View>
-                <Text className="text-xs font-quicksand-medium text-gray-100">📍 15-20 min</Text>
-            </View>
+
 
             {/* Special Offers Title */}
             <View className="flex-row justify-between items-center mb-3">

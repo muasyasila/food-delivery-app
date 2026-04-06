@@ -12,6 +12,9 @@ const Profile = () => {
     const { user, setUser, setIsAuthenticated } = useAuthStore();
     const [isLoggingOut, setIsLoggingOut] = useState(false);
 
+    // Set your admin email here - FIXED to match your actual email
+    const isAdmin = user?.email === 'curtissilaadmin@gmail.com';
+
     const handleLogout = async () => {
         Alert.alert(
             "Sign Out",
@@ -117,21 +120,55 @@ const Profile = () => {
                     />
                 </View>
 
-                {/* Edit Profile Button */}
+                {/* MY ORDERS BUTTON - NEW */}
                 <TouchableOpacity
-                    onPress={() => router.push('/edit-profile')}
+                    onPress={() => router.push('/orders')}
                     className="bg-primary py-4 rounded-xl mb-4 flex-row items-center justify-center"
                 >
                     <Image
-                        source={images.pencil}
+                        source={images.bag}
                         className="w-5 h-5 mr-2"
                         style={{ tintColor: '#FFFFFF' }}
                         resizeMode="contain"
                     />
                     <Text className="text-white font-quicksand-bold text-base">
-                        Edit Profile
+                        📋 My Orders
                     </Text>
                 </TouchableOpacity>
+
+                {/* Edit Profile Button */}
+                <TouchableOpacity
+                    onPress={() => router.push('/edit-profile')}
+                    className="bg-gray-100 py-4 rounded-xl mb-4 flex-row items-center justify-center"
+                >
+                    <Image
+                        source={images.pencil}
+                        className="w-5 h-5 mr-2"
+                        style={{ tintColor: '#333' }}
+                        resizeMode="contain"
+                    />
+                    <Text className="text-dark-100 font-quicksand-bold text-base">
+                        ✏️ Edit Profile
+                    </Text>
+                </TouchableOpacity>
+
+                {/* ADMIN BUTTON - Only visible to admin */}
+                {isAdmin && (
+                    <TouchableOpacity
+                        onPress={() => router.push('/admin')}
+                        className="bg-purple-500 py-4 rounded-xl mb-4 flex-row items-center justify-center shadow-md"
+                    >
+                        <Image
+                            source={images.person}
+                            className="w-5 h-5 mr-2"
+                            style={{ tintColor: '#FFFFFF' }}
+                            resizeMode="contain"
+                        />
+                        <Text className="text-white font-quicksand-bold text-base">
+                            🔧 Admin Panel
+                        </Text>
+                    </TouchableOpacity>
+                )}
 
                 {/* Sign Out Button */}
                 <TouchableOpacity

@@ -1,4 +1,4 @@
-import {View, Text, FlatList} from 'react-native'
+import {View, Text, FlatList, TouchableOpacity, Alert} from 'react-native'
 import {SafeAreaView} from "react-native-safe-area-context";
 import {useCartStore} from "@/store/cart.store";
 import CustomHeader from "@/components/CustomHeader";
@@ -6,6 +6,8 @@ import cn from "clsx";
 import CustomButton from "@/components/CustomButton";
 import CartItem from "@/components/CartItem";
 import {PaymentInfoStripeProps} from "@/type";
+import { router } from 'expo-router';
+import useAuthStore from '@/store/auth.store';
 
 const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: PaymentInfoStripeProps) => (
     <View className="flex-between flex-row my-1">
@@ -20,6 +22,7 @@ const PaymentInfoStripe = ({ label,  value,  labelStyle,  valueStyle, }: Payment
 
 const Cart = () => {
     const { items, getTotalItems, getTotalPrice } = useCartStore();
+    const { user } = useAuthStore();
 
     const DELIVERY_FEE = 200;
     const DISCOUNT = 100;
@@ -27,6 +30,30 @@ const Cart = () => {
     const totalItems = getTotalItems();
     const totalPrice = getTotalPrice();
     const finalTotal = totalPrice + DELIVERY_FEE - DISCOUNT;
+
+    const handleOrderNow = () => {
+        // Check if cart is empty
+        if (totalItems === 0) {
+            Alert.alert('Cart Empty', 'Please add items to your cart before ordering');
+            return;
+        }
+
+        // Check if user is logged in
+        if (!user) {
+            Alert.alert(
+                'Login Required',
+                'Please login to place an order',
+                [
+                    { text: 'Cancel', style: 'cancel' },
+                    { text: 'Login', onPress: () => router.push('/signin') }  // FIXED: removed (auth)
+                ]
+            );
+            return;
+        }
+
+        // Navigate to checkout
+        router.push('/checkout');  // FIXED: removed /tabs/
+    };
 
     return (
         <SafeAreaView className="bg-white h-full">
@@ -36,7 +63,18 @@ const Cart = () => {
                 keyExtractor={(item) => item.id}
                 contentContainerClassName="pb-28 px-5 pt-5"
                 ListHeaderComponent={() => <CustomHeader title="Your Cart" />}
-                ListEmptyComponent={() => <Text>Cart Empty</Text>}
+                ListEmptyComponent={() => (
+                    <View className="items-center justify-center py-20">
+                        <Text className="text-gray-400 text-lg">Your cart is empty</Text>
+                        <Text className="text-gray-400 text-sm mt-2">Add some delicious food!</Text>
+                        <TouchableOpacity
+                            className="bg-primary px-6 py-3 rounded-full mt-5"
+                            onPress={() => router.push('/')}  // FIXED: go to home
+                        >
+                            <Text className="text-white font-bold">Browse Food</Text>
+                        </TouchableOpacity>
+                    </View>
+                )}
                 ListFooterComponent={() => totalItems > 0 && (
                     <View className="gap-5">
                         <View className="mt-6 border border-gray-200 p-5 rounded-2xl">
@@ -66,7 +104,10 @@ const Cart = () => {
                             />
                         </View>
 
-                        <CustomButton title="Order Now" />
+                        <CustomButton
+                            title="Order Now"
+                            onPress={handleOrderNow}
+                        />
                     </View>
                 )}
             />

@@ -106,3 +106,79 @@ interface GetMenuParams {
     category: string;
     query: string;
 }
+
+// ============================================
+// 🆕 ORDER RELATED TYPES - ADDED BELOW
+// ============================================
+
+// Order interface - matches the orders collection in Appwrite
+export interface Order extends Models.Document {
+    userId: string;           // User's account ID from Appwrite auth
+    userName: string;         // Customer's full name
+    userEmail: string;        // Customer's email address
+    items: string;            // JSON string of cart items (parse with JSON.parse)
+    totalAmount: number;      // Total order amount
+    status: 'pending' | 'confirmed' | 'delivered';  // Order status
+    deliveryAddress: string;  // Where to deliver the order
+    orderDate: string;        // ISO string of when order was placed
+}
+
+// Parameters for creating a new order
+export interface CreateOrderParams {
+    userId: string;
+    userName: string;
+    userEmail: string;
+    items: CartItemType[];    // Array of cart items (will be stringified)
+    totalAmount: number;
+    deliveryAddress: string;
+}
+
+// Parameters for filtering orders (admin dashboard)
+export interface GetOrdersFilters {
+    month?: number;      // 1-12
+    year?: number;       // e.g., 2024, 2025
+    status?: string;     // 'pending', 'confirmed', 'delivered', or 'all'
+    limit?: number;      // Max number of orders to return
+}
+
+// Order statistics for admin dashboard
+export interface OrderStats {
+    totalOrders: number;
+    totalRevenue: number;
+    pendingOrders: number;
+    confirmedOrders: number;
+    deliveredOrders: number;
+    orders: Order[];
+}
+
+// Monthly sales report data
+export interface MonthlyReport {
+    month: number;
+    year: number;
+    totalOrders: number;
+    totalRevenue: number;
+    orders: Order[];
+}
+
+// Order item display (when parsing the items JSON string)
+export interface ParsedOrderItem {
+    id: string;
+    name: string;
+    price: number;
+    quantity: number;
+    image_url?: string;
+    customizations?: CartCustomization[];
+}
+
+// Checkout form data
+export interface CheckoutFormData {
+    deliveryAddress: string;
+    paymentMethod?: string;
+    specialInstructions?: string;
+}
+
+// Update order status parameters
+export interface UpdateOrderStatusParams {
+    orderId: string;
+    status: 'pending' | 'confirmed' | 'delivered';
+}

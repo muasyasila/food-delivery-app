@@ -5,17 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="25556cee-f7b2-4b2a-867e-358e6ab1b6f9" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/api/stripe/create+api.ts" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/item/[id].tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/Payment.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/fetch.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/_layout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/index.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/manage-foods.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/orders.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/admin/reports.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/checkout.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/orders.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/_layout.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-in.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/_layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(tabs)/cart.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/cart.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MenuCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MenuCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/index.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/index.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(tabs)/profile.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(tabs)/profile.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/lib/appwrite.ts" beforeDir="false" afterPath="$PROJECT_DIR$/lib/appwrite.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/store/auth.store.ts" beforeDir="false" afterPath="$PROJECT_DIR$/store/auth.store.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/type.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/type.d.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -49,28 +58,28 @@
     <option name="sortByType" value="true" />
     <option name="sortKey" value="BY_TYPE" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "node",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "C:/Users/curti/OneDrive/Desktop/food_ordering",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "consents",
-    "ts.external.directory.path": "C:\\Users\\curti\\OneDrive\\Desktop\\food_ordering\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/curti/OneDrive/Desktop/food_ordering&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;consents&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\curti\\OneDrive\\Desktop\\food_ordering\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -125,7 +134,11 @@
       <workItem from="1771698843142" duration="18257000" />
       <workItem from="1773987568082" duration="83000" />
       <workItem from="1773987720799" duration="9000" />
-      <workItem from="1773990760848" duration="6736000" />
+      <workItem from="1773990760848" duration="8151000" />
+      <workItem from="1774786396313" duration="799000" />
+      <workItem from="1775279094104" duration="11713000" />
+      <workItem from="1775452658821" duration="3261000" />
+      <workItem from="1775456267132" duration="5203000" />
     </task>
     <servers />
   </component>
